@@ -2,6 +2,14 @@
 
 PostingPlugin is a Claude Code plugin for researching, composing, editing, and fact-checking blog posts. A **chairman** coordinator agent orchestrates four specialist sub-agents through the full pipeline and iterates until the post is publish-ready.
 
+## Slash command
+
+| Command | File | Description |
+|---|---|---|
+| `/write-post [topic]` | `.claude/commands/write-post.md` | Start the full chairman pipeline for a new blog post |
+
+Use `/write-post` to kick off a new post. Supply the topic inline or leave it blank and Claude will prompt you for the topic, audience, length, and any special constraints before invoking the chairman agent.
+
 ## Sub-agents
 
 | Agent | File | Responsibility |
@@ -33,7 +41,7 @@ Each agent accepts plain text or markdown. Keep inter-agent handoffs as markdown
 ## Usage examples
 
 ```
-Write a 1000-word blog post about the history of the Linux kernel aimed at intermediate developers.
+/write-post The history of the Linux kernel for intermediate developers
 ```
 
 ```

@@ -6,11 +6,13 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin that mana
 
 1. Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 2. Clone this repository into your project or add it as a Claude Code plugin.
-3. Ask Claude to write a blog post — it will automatically coordinate the four agents to research the topic, write a draft, verify every fact, and polish the final copy.
+3. Use the `/write-post` slash command to kick off the full pipeline:
 
 ```
-Write a 1000-word blog post about the history of the Linux kernel aimed at intermediate developers.
+/write-post The history of the Linux kernel for intermediate developers
 ```
+
+Claude will prompt you for any missing details (audience, length, angle) and then run the full pipeline automatically.
 
 ## Plugin structure
 
@@ -18,6 +20,8 @@ Write a 1000-word blog post about the history of the Linux kernel aimed at inter
 PostingPlugin/
 ├── CLAUDE.md                        # Main plugin instructions and workflow
 └── .claude/
+    ├── commands/
+    │   └── write-post.md            # /write-post slash command — starts the chairman pipeline
     └── agents/
         ├── chairman.md              # Coordinates the pipeline and iterates until publish-ready
         ├── researcher.md            # Gathers facts and builds a research brief
