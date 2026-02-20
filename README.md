@@ -1,16 +1,18 @@
 # PostingPlugin
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin that manages the full lifecycle of blog post creation through four coordinated sub-agents: **Researcher**, **Composer**, **Fact Checker**, and **Editor**.
+A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin that manages the full lifecycle of blog post creation through five coordinated sub-agents: **Chairman**, **Researcher**, **Composer**, **Fact Checker**, and **Editor**.
 
 ## Quick start
 
 1. Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 2. Clone this repository into your project or add it as a Claude Code plugin.
-3. Ask Claude to write a blog post — it will automatically coordinate the four agents to research the topic, write a draft, verify every fact, and polish the final copy.
+3. Use the `/write-post` slash command to kick off the full pipeline:
 
 ```
-Write a 1000-word blog post about the history of the Linux kernel aimed at intermediate developers.
+/write-post The history of the Linux kernel for intermediate developers
 ```
+
+Claude will prompt you for any missing details (audience, length, angle) and then run the full pipeline automatically.
 
 ## Plugin structure
 
@@ -18,7 +20,10 @@ Write a 1000-word blog post about the history of the Linux kernel aimed at inter
 PostingPlugin/
 ├── CLAUDE.md                        # Main plugin instructions and workflow
 └── .claude/
+    ├── commands/
+    │   └── write-post.md            # /write-post slash command — starts the chairman pipeline
     └── agents/
+        ├── chairman.md              # Coordinates the pipeline and iterates until publish-ready
         ├── researcher.md            # Gathers facts and builds a research brief
         ├── composer.md              # Writes the first draft from the brief
         ├── fact-checker.md          # Verifies every claim in the draft
@@ -27,17 +32,29 @@ PostingPlugin/
 
 ## Coordinated pipeline
 
+For a new blog post, invoke the `chairman` agent. It runs the full pipeline and loops the compose → fact-check → edit cycle until the post meets quality standards (or up to three revision iterations).
+
 ```
 User request
      │
      ▼
- researcher ──► composer ──► fact-checker ──► editor ──► Final post
+ chairman
+     │
+     ▼
+ researcher ──► composer ──► fact-checker ──► editor
+                    ▲                              │
+                    │         (loop if needed)     │
+                    └──────────────────────────────┘
+                                                   │
+                                                   ▼
+                                            Final post + Chairman's summary
 ```
 
-1. **Researcher** — searches the web and builds a structured brief (key facts, context, outline, sources).
-2. **Composer** — turns the brief into a full first draft (title, sections, meta description).
-3. **Fact Checker** — verifies every factual claim and returns a report of verdicts and corrections.
-4. **Editor** — applies corrections and polishes the post for clarity, tone, grammar, and SEO.
+1. **Chairman** — coordinates all agents, evaluates quality, and iterates until the post is publish-ready.
+2. **Researcher** — searches the web and builds a structured brief (key facts, context, outline, sources).
+3. **Composer** — turns the brief into a full first draft (title, sections, meta description).
+4. **Fact Checker** — verifies every factual claim and returns a report of verdicts and corrections.
+5. **Editor** — applies corrections and polishes the post for clarity, tone, grammar, and SEO.
 
 Agents can also be invoked individually:
 
