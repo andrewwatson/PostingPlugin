@@ -24,13 +24,14 @@ Use `/write-post` to kick off a new post. Supply the topic inline or leave it bl
 
 For a new blog post, invoke the `chairman` agent. It will automatically run the full pipeline and iterate until the output is satisfactory.
 
-The chairman orchestrates the agents in this order, looping stages 2–4 as needed:
+The chairman orchestrates the agents in this order, looping stages 2–5 as needed:
 
 1. **Research** — Use the `researcher` agent to gather information on the topic. Pass the topic and any constraints (audience, length, angle) to the agent. It returns a structured research brief.
 2. **Compose** — Pass the research brief to the `composer` agent. It returns a full first-draft post (title, introduction, body sections, conclusion, metadata suggestions).
-3. **Fact-check** — Pass the draft to the `fact-checker` agent. It returns an annotated list of claims with a verdict (verified / unverified / false) and suggested corrections.
-4. **Edit** — Pass the draft together with the fact-checker's corrections to the `editor` agent. It returns the final polished post.
-5. **Quality gate** — The chairman evaluates the output. If the post contains false or unresolved unverified claims, or outstanding editorial issues, it sends the draft back to the `composer` with targeted revision instructions and repeats steps 2–4 (up to three iterations total).
+3. **Fact-check (draft)** — Pass the draft to the `fact-checker` agent. It returns an annotated list of claims with a verdict (verified / unverified / false) and suggested corrections.
+4. **Edit** — Pass the draft together with the fact-checker's corrections to the `editor` agent. It returns the polished post.
+5. **Fact-check (final)** — Pass the editor's output back to the `fact-checker` agent to ensure no new or altered claims slipped through during editing.
+6. **Quality gate** — The chairman evaluates the final fact-check report. If the post contains false or unresolved unverified claims, or outstanding editorial issues, it sends the draft back to the `composer` with targeted revision instructions and repeats steps 2–5 (up to three iterations total).
 
 Agents may be invoked individually when only one stage is needed (e.g. re-editing an existing post, or fact-checking content written elsewhere).
 

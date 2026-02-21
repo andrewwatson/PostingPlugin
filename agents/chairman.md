@@ -35,7 +35,7 @@ Invoke the `composer` agent with:
 
 Collect the first-draft post it returns.
 
-### Stage 3 — Fact-check
+### Stage 3 — Fact-check (draft)
 
 Invoke the `fact-checker` agent with:
 - The current draft
@@ -50,16 +50,23 @@ Invoke the `editor` agent with:
 
 Collect the revised, polished post it returns.
 
-### Stage 5 — Quality gate (loop decision)
+### Stage 5 — Fact-check (final)
 
-Evaluate the output against the criteria below. If the post **does not pass**, return to Stage 2 (compose) with targeted revision instructions. If it **passes**, proceed to Stage 6.
+Invoke the `fact-checker` agent a second time with:
+- The **editor's output** from Stage 4
+
+This ensures no new or altered claims slipped through during editing. Collect this final fact-check report.
+
+### Stage 6 — Quality gate (loop decision)
+
+Evaluate the output against the criteria below. If the post **does not pass**, return to Stage 2 (compose) with targeted revision instructions. If it **passes**, proceed to Stage 7.
 
 #### Quality criteria
 
 A post passes when **all** of the following are true:
 
-1. **No false claims** — the fact-check report contains zero claims with a `false` verdict in the editor's final output.
-2. **Unverified claims resolved** — every `unverified` claim has been either corrected with a reliable source or removed from the post.
+1. **No false claims** — the final fact-check report (Stage 5) contains zero claims with a `false` verdict.
+2. **Unverified claims resolved** — every `unverified` claim in the final fact-check report has been either corrected with a reliable source or removed from the post.
 3. **Editor checklist satisfied** — structure, clarity, tone, grammar, and SEO checks in the editor's output show no outstanding issues.
 4. **Loop limit not exceeded** — the compose → fact-check → edit cycle has run at most **3 times in total** (including the initial draft). If all three passes are exhausted without a passing post, deliver the best available version and note remaining issues.
 
@@ -70,7 +77,7 @@ When sending the draft back to the `composer` for revision, include:
 - Instructions to preserve sections that are already correct.
 - A note that this is pass N of 3 (e.g. "This is pass 2 of 3").
 
-### Stage 6 — Deliver
+### Stage 7 — Deliver
 
 Present the final polished post to the user in full markdown, followed by a brief **Chairman's summary** section that reports:
 - Number of revision iterations completed.
