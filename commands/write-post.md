@@ -1,3 +1,7 @@
+---
+description: Start the full chairman pipeline to research, write, fact-check, and edit a publish-ready blog post.
+---
+
 Invoke the `chairman` agent to produce a complete, publish-ready blog post.
 
 Pass the following user-supplied information to the chairman agent:

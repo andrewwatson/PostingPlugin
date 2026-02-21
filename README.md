@@ -2,14 +2,30 @@
 
 A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin that manages the full lifecycle of blog post creation through five coordinated sub-agents: **Chairman**, **Researcher**, **Composer**, **Fact Checker**, and **Editor**.
 
+## Installation
+
+Requires Claude Code 1.0.33 or later.
+
+```bash
+# Install from GitHub (project scope — shared with your team via .claude/settings.json)
+claude plugin install andrewwatson/PostingPlugin --scope project
+
+# Or install for your user account (available in all projects)
+claude plugin install andrewwatson/PostingPlugin --scope user
+```
+
+To test locally without installing:
+
+```bash
+claude --plugin-dir /path/to/PostingPlugin
+```
+
 ## Quick start
 
-1. Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
-2. Clone this repository into your project or add it as a Claude Code plugin.
-3. Use the `/write-post` slash command to kick off the full pipeline:
+Once installed, use the `/posting-plugin:write-post` slash command to kick off the full pipeline:
 
 ```
-/write-post The history of the Linux kernel for intermediate developers
+/posting-plugin:write-post The history of the Linux kernel for intermediate developers
 ```
 
 Claude will prompt you for any missing details (audience, length, angle) and then run the full pipeline automatically.
@@ -18,21 +34,35 @@ Claude will prompt you for any missing details (audience, length, angle) and the
 
 ```
 PostingPlugin/
-├── CLAUDE.md                        # Main plugin instructions and workflow
-└── .claude/
-    ├── commands/
-    │   └── write-post.md            # /write-post slash command — starts the chairman pipeline
-    └── agents/
-        ├── chairman.md              # Coordinates the pipeline and iterates until publish-ready
-        ├── researcher.md            # Gathers facts and builds a research brief
-        ├── composer.md              # Writes the first draft from the brief
-        ├── fact-checker.md          # Verifies every claim in the draft
-        └── editor.md                # Polishes the post and applies corrections
+├── .claude-plugin/
+│   └── plugin.json              # Plugin manifest
+├── commands/
+│   └── write-post.md            # /posting-plugin:write-post slash command
+├── agents/
+│   ├── chairman.md              # Coordinates the pipeline and iterates until publish-ready
+│   ├── researcher.md            # Gathers facts and builds a research brief
+│   ├── composer.md              # Writes the first draft from the brief
+│   ├── fact-checker.md          # Verifies every claim in the draft
+│   └── editor.md                # Polishes the post and applies corrections
+└── CLAUDE.md                    # Plugin instructions loaded into every session
 ```
+
+## Namespacing
+
+Because this is a plugin, all commands and agents are namespaced with `posting-plugin:`:
+
+| Resource | Name |
+|---|---|
+| Slash command | `/posting-plugin:write-post` |
+| Chairman agent | `posting-plugin:chairman` |
+| Researcher agent | `posting-plugin:researcher` |
+| Composer agent | `posting-plugin:composer` |
+| Fact-checker agent | `posting-plugin:fact-checker` |
+| Editor agent | `posting-plugin:editor` |
 
 ## Coordinated pipeline
 
-For a new blog post, invoke the `chairman` agent. It runs the full pipeline and loops the compose → fact-check → edit cycle until the post meets quality standards (or up to three revision iterations).
+The `chairman` agent runs the full pipeline and loops the compose → fact-check → edit cycle until the post meets quality standards (or up to three revision iterations).
 
 ```
 User request
@@ -56,7 +86,9 @@ User request
 4. **Fact Checker** — verifies every factual claim and returns a report of verdicts and corrections.
 5. **Editor** — applies corrections and polishes the post for clarity, tone, grammar, and SEO.
 
-Agents can also be invoked individually:
+## Individual agents
+
+Agents can also be invoked individually when only one stage is needed:
 
 ```
 # Edit an existing post
@@ -71,5 +103,5 @@ Research the current state of WebAssembly for a technical audience.
 
 ## Requirements
 
-- Claude Code with sub-agent support
+- Claude Code 1.0.33 or later (plugin system public beta)
 - Web search tool enabled (required by the Researcher and Fact Checker agents)

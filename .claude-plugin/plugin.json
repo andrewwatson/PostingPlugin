@@ -1,0 +1,13 @@
+{
+  "name": "posting-plugin",
+  "version": "1.0.0",
+  "description": "Blog post creation pipeline — research, compose, fact-check, and edit with coordinated sub-agents.",
+  "author": {
+    "name": "andrewwatson",
+    "url": "https://github.com/andrewwatson"
+  },
+  "homepage": "https://github.com/andrewwatson/PostingPlugin",
+  "repository": "https://github.com/andrewwatson/PostingPlugin",
+  "license": "MIT",
+  "keywords": ["blog", "writing", "research", "fact-checking", "content", "pipeline"]
+}

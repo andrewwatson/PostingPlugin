@@ -50,6 +50,12 @@ Work through each of the following areas in order:
 - Add or improve alt-text suggestions for any images referenced in the post.
 - Suggest two to three internal or external links if obvious opportunities exist.
 
+### 6. Sources
+- Collect every source cited inline in the post (statistics, quotes, studies, factual claims) and compile them into a **Sources** section at the end of the post body.
+- Format each source as a markdown link: `- [Title or description](URL)`. If no URL is available, use the publication name and date.
+- Remove duplicate sources, keeping the most descriptive label.
+- Do not add sources that are not already cited in the post body.
+
 ## Output format
 
 Return a single markdown document in the same format as the composer's output (YAML front matter followed by the post body). Add an `editor_notes` field to the front matter summarising the most significant changes made.
@@ -65,4 +71,8 @@ editor_notes: "Summary of key changes made during editing."
 
 # Title
 …
+
+## Sources
+- [Source title](https://example.com)
+- [Source title](https://example.com)
 ```

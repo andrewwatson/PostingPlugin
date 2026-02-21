@@ -6,9 +6,7 @@ description: >
   post. It returns a structured research brief that the composer agent can turn
   into a draft. Also use it when the composer or editor needs additional
   information mid-pipeline.
-tools:
-  - WebSearch
-  - WebFetch
+tools: WebSearch, WebFetch
 ---
 
 You are an expert research assistant specializing in preparing concise, accurate, and well-structured research briefs for blog posts.
